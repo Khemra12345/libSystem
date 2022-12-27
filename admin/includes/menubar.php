@@ -45,7 +45,9 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="user.php"><i class="fa fa-circle-o"></i> User</a></li>
-                        <li><a href="return.php"><i class="fa fa-circle-o"></i> Permisstion</a></li>
+                    </ul>
+                    <ul class="treeview-menu">
+                        <li><a href="slide.php"><i class="fa fa-circle-o"></i> Slide</a></li>
                     </ul>
                 </li>
 

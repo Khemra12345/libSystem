@@ -1,15 +1,15 @@
 <?php
-    require './config/db.php';
+    require '../config/db.php';
     include('function.php');
 
     $query = '';
     $output = array();
-    $query .= "SELECT * FROM users";
+    $query .= "SELECT * FROM User";
 
     if(isset($_POST["search"]["value"]))
     {
-        $query .= ' where first_name LIKE "%'.$_POST["search"]["value"].'%" ';
-        $query .= 'OR last_name LIKE "%'.$_POST["search"]["value"].'%" ';
+        $query .= ' where username LIKE "%'.$_POST["search"]["value"].'%" ';
+        $query .= 'OR email LIKE "%'.$_POST["search"]["value"].'%" ';
     }
     if(isset($_POST["order"]))
     {
@@ -43,12 +43,14 @@
         }
         $sub_array = array(); 
         $sub_array[] = $row["id"];
-        $sub_array[] = $row["first_name"];
-        $sub_array[] = $row["last_name"];
+        $sub_array[] = $row["username"];
+        $sub_array[] = $row["password"];
+        $sub_array[] = $row["email"];
         $sub_array[] = $image;
+        $sub_array[] = $row["create_date"];
+       
      
-        $sub_array[] = '<button type="button" name="update" id="'.$row["id"].'" class="btn btn-primary btn-xs update mx-4"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>';
-        $sub_array[] = '<button type="button" name="delete" id="'.$row["id"].'" class="btn btn-danger btn-xs delete mx-4"><i class="fa fa-trash-o" aria-hidden="true"></i></button>';
+        $sub_array[] = '<button type="button" name="update" id="'.$row["id"].'" class="btn btn-primary btn-xs update mx-4"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>' . '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="'.$row["id"].'" class="btn btn-danger btn-xs delete mx-4"><i class="fa fa-trash-o" aria-hidden="true"></i></button>';
         $data[] = $sub_array;
     }
     $output = array(

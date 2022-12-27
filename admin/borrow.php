@@ -37,11 +37,6 @@
                                 </button> 
                             </div>
                             
-                            <div>
-                            <a href="exportBorrow.php" id="btnExport" class="btn btn-warning">
-                                    <i class="fa fa-file-excel-o" aria-hidden="true"></i> Export
-                                </a>
-                            </div>
                            
 
 
@@ -99,7 +94,7 @@
                                                     </div>
 
                                                     <div class="modal-footer">
-                                                        <button class="btn btn-success"
+                                                        <button type="button" class="btn btn-success"
                                                             id="btnSave">Save</button>
                                                         <button type="button" class="btn btn-danger"
                                                             data-dismiss="modal">Close</button>

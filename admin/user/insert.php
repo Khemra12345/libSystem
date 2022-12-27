@@ -1,5 +1,5 @@
 <?php
-      require './config/db.php';
+      require '../config/db.php';
     include('function.php');
     if(isset($_POST["operation"]))
     {
@@ -11,14 +11,15 @@
                 $image = upload_image();
             }
             $statement = $conn->prepare("
-                INSERT INTO users (first_name, last_name, image) 
-                VALUES (:first_name, :last_name, :image)
+                INSERT INTO User (username, password, image, email) 
+                VALUES (:username, :password, :image, :email)
             ");
             $result = $statement->execute(
                 array(
-                    ':first_name'   =>  $_POST["first_name"],
-                    ':last_name'    =>  $_POST["last_name"],
-                    ':image'        =>  $image
+                    ':username'   =>  $_POST["username"],
+                    ':password'    =>  $_POST["password"],
+                    ':image'        =>  $image,
+                    ':email'    =>  $_POST["email"],
                 )
             );
             if(!empty($result))
@@ -38,17 +39,16 @@
                 $image = $_POST["hidden_user_image"];
             }
             $statement = $conn->prepare(
-                "UPDATE users 
-                SET first_name = :first_name, last_name = :last_name, image = :image  
-                WHERE id = :id
+                "UPDATE User SET usermane = :usermane, password = :password, image = :image, email = :email WHERE id = :id
                 "
             );
             $result = $statement->execute(
                 array(
-                    ':first_name'   =>  $_POST["first_name"],
-                    ':last_name'    =>  $_POST["last_name"],
+                    ':username'   =>  $_POST["username"],
+                    ':password'    =>  $_POST["password"],
                     ':image'        =>  $image,
-                    ':id'           =>  $_POST["user_id"]
+                    ':email'    =>  $_POST["email"],
+                    ':id'       =>  $_POST["user_id"]
                 )
             );
             if(!empty($result))

@@ -1,12 +1,6 @@
-<?php  
-  session_start();
-  include('config/db.php');
- 
-  if( !isset($_SESSION["username"])){
-      header('Location: ./index.php');
-  }  
- ?>
 <?php include 'includes/header.php'; ?>
+
+
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
 
@@ -17,13 +11,13 @@
         <div class="content-wrapper" style="margin-top: 50px;">
             <!-- Content Header (Page header) -->
 
-              <section class="content-header">
+            <section class="content-header">
                 <h1>
-                    User Management
+                    User List
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <li>User</li>
+
                     <li class="active">User</li>
                 </ol>
             </section>
@@ -32,84 +26,92 @@
                 <div class="content-panel" style="padding-top: 10px;">
                     <div class="card">
                         <div class="card-header">
-                            <button type="button" id="btnadd" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                            <i class="fa fa-plus-circle" aria-hidden="true"></i> AddNew
-                            </button>
+                            <button type="button" id="add_button" data-toggle="modal" data-target="#userModal"
+                                class="btn btn-success"><i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                Add
+                                New</button>
                         </div>
-                        <div class="card-body">
-                            <table data-ordering="false" id="table_id" class="table table-hover d-flex justify-content-between">
-                                                                  
-                                <div class="modal fade" id="myModal">
+                        <div id="image_data">
+                            <div class="card-body">
+                                <table id="user_data" class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>USERNAME</th>
+                                            <th>PASSWORD</th>
+                                            <th>EMAIL</th>
+                                            <th>IMAGE</th>
+                                            <th>CREATE DATE</th>
+                                            <th>Actions</th>
+
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                                <div id="userModal" class="modal fade">
                                     <div class="modal-dialog">
-                                        <div class="modal-content">
+                                        <form method="post" id="user_form" enctype="multipart/form-data">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Add News</h4>
+                                                    <!-- <button type="button" class="btn-close" data-dismiss="modal"
+                                                        aria-label="Close"></button> -->
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Username</label>
+                                                        <input type="text" name="username" id="username"
+                                                            class="form-control" />
+                                                    </div>
 
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">User Info</h4>
-                                                <button type="button" class="close" data-dismiss="modal"><i
-                                                        class="fas fa-closes"></i></button>
+                                                    <div class="form-group">
+                                                        <label class="form-label">Password</label>
+                                                        <input type="password" name="password" id="password"
+                                                            class="form-control" />
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="form-label">Email</label>
+                                                        <input type="email" name="email" id="email"
+                                                            class="form-control" />
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="form-label">Image</label>
+                                                        <input type="file" name="user_image" id="user_image"
+                                                            class="form-control">
+                                                        <span id="user_uploaded_image"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <input type="hidden" name="user_id" id="user_id" />
+                                                    <input type="hidden" name="operation" id="operation" />
+                                                    <input type="submit" name="action" id="action"
+                                                        class="btn btn-success" value="Add" />
+                                                    <button type="button" class="btn btn-default"
+                                                        data-dismiss="modal">Close</button>
+                                                </div>
                                             </div>
-
-                                                <!----Modal body------>
-                                            <div class="modal-body">
-                                                <!---name------>
-                                                <form method="post" id="form"  enctype="multipart/form-data">
-                                                    <div class="from-group">
-                                                        <label for="txtname">Name:</label>
-                                                        <input type="text" class="form-control" id="txtname" placeholder="Enter" name="txtname" required>
-                                                    </div>
-
-                                                    <!---phone------>
-                                                    <div class="from-group">
-                                                        <label for="txtpass">Password:</label>
-                                                        <input type="text" class="form-control" id="txtpass"  placeholder="Enter" name="txtpass"  required>
-                                                    </div>
-
-                                                    <!---email------>
-                                                    <div class="from-group">
-                                                        <label for="txtemail">Email:</label>
-                                                        <input type="text" class="form-control" id="txtemail"  placeholder="Enter" name="txtemail" required>
-                                                    </div>
-                                                        
-                                                    <div class="from-group">
-                                                        <label for="txtutype">User Type:</label>
-                                                            <select class="form-control" id="txtutype" name="txtutype" required> 
-                                                                <option>--choose--</option> 
-                                                                <option value="Admin">Admin</option>
-                                                                <option value="Editor">Editor</option>
-                                                            </select>
-                                                    </div>
-
-                       
-                                                    <div class="from-group">
-                                                        <label for="txtverify">verify Password:</label>
-                                                        <input type="text" class="form-control" id="txtverify"  placeholder="Enter" name="txtverify" required>
-                                                    </div>
-                                                    
-
-                                            <!---Modal footer----->
-                                            <div class="modal-footer"> 
-                                            <button class="btn btn-secondary" id="btnSave" >Save</button>
-                                                <button type="button" class="btn btn-danger" id="btnclose" data-dismiss="modal">Close</button>
                                         </form>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
-                            </table>
-                           
+
+                            </div>
+
                         </div>
-
                     </div>
+
                 </div>
-
             </div>
+
         </div>
-        
-        <?php include 'includes/footer.php'; ?>
-        <?php include 'includes/scripts.php'; ?>
 
 
-        <script type="text/javascript" src="js\jquery.dataTables.min.js"></script>
-        <script type="text/javascript" src="js\dataTables.bootstrap4.min.js"></script>
-        <script type="text/javascript" src="js\user.js"></script>
+    </div>
 </body>
+<?php include 'includes/scripts.php'; ?>
+
+
+<script type="text/javascript" src="js\jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="js\dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript" src="js\user.js"></script>

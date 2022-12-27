@@ -6,7 +6,7 @@ function upload_image()
     {
         $extension = explode('.', $_FILES['user_image']['name']);
         $new_name = rand() . '.' . $extension[1];
-        $destination = './upload/' . $new_name;
+        $destination = '../upload/' . $new_name;
         move_uploaded_file($_FILES['user_image']['tmp_name'], $destination);
         return $new_name;
     }
@@ -14,8 +14,8 @@ function upload_image()
 
 function get_image_name($user_id)
 {
-    require './config/db.php';
-    $statement = $conn->prepare("SELECT image FROM users WHERE id = '$user_id'");
+    require '../config/db.php';
+    $statement = $conn->prepare("SELECT image FROM User WHERE id = '$user_id'");
     $statement->execute();
     $result = $statement->fetchAll();
     foreach($result as $row)
@@ -26,8 +26,8 @@ function get_image_name($user_id)
 
 function get_total_all_records()
 {
-    require './config/db.php';
-    $statement = $conn->prepare("SELECT * FROM users");
+    require '../config/db.php';
+    $statement = $conn->prepare("SELECT * FROM User");
     $statement->execute();
     $result = $statement->fetchAll();
     return $statement->rowCount();

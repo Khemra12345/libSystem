@@ -1,15 +1,15 @@
 <?php
-    require './config/db.php';
+    require '../config/db.php';
     include("function.php");
     if(isset($_POST["user_id"]))
     {
         $image = get_image_name($_POST["user_id"]);
         if($image != '')
         {
-            unlink("upload/" . $image);
+            unlink("../upload/" . $image);
         }
         $statement = $conn->prepare(
-            "DELETE FROM users WHERE id = :id"
+            "DELETE FROM User WHERE id = :id"
         );
         $result = $statement->execute(
             array(

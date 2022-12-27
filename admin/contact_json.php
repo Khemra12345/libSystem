@@ -2,7 +2,7 @@
 
     require './config/db.php';
     if($_GET["data"] == "get_contact"){
-        $sql = "select * from tbl_contact";
+        $sql = "select * from Contact";
         $result = $conn->prepare($sql);
 		$result->execute();
         $contact = [];
@@ -17,7 +17,7 @@
             $email = $_POST['txtEmail'];
             $description = $_POST['txtDescription'];
 
-            $sql = "Insert into tbl_contact(fullName,email,description) values (:fullName,:email,:description);";
+            $sql = "Insert into Contact(fullName,email,description) values (:fullName,:email,:description);";
             $insert = $conn->prepare($sql);
             $insert->bindParam(':fullName', $fullName);
             $insert->bindParam(':email', $email);
@@ -32,7 +32,7 @@
 
     //get_byID
     if($_GET['data'] == 'get_byid'){
-        $result = $conn->prepare("select * from tbl_contact where id=:id");
+        $result = $conn->prepare("select * from Contact where id=:id");
         $result->bindParam(':id', $_GET['id']);
         $result->execute();
         if($row = $result->fetch(PDO::FETCH_ASSOC)){
@@ -49,7 +49,7 @@
             $email = $_POST['txtEmail'];
             $description = $_POST['txtDescription'];
 
-            $sql = "Update tbl_contact set fullName=:fullName,email=:email,description=:description where id=:id;";
+            $sql = "Update Contact set fullName=:fullName,email=:email,description=:description where id=:id;";
             $update = $conn->prepare($sql);
 
             $update->bindParam(':fullName', $fullName);
@@ -67,7 +67,7 @@
     //delete
     if($_GET['data'] == 'delete_contact'){
         $id = $_GET['id'];
-        $delete = $conn->prepare("DELETE FROM tbl_contact WHERE id=:id;");
+        $delete = $conn->prepare("DELETE FROM Contact WHERE id=:id;");
         $delete->bindParam(':id', $id);
         if($delete->execute()){
             echo json_encode("Delete Success");

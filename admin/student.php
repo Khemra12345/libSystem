@@ -6,7 +6,7 @@
 
         <?php include 'includes/navbar.php'; ?>
         <?php include 'includes/menubar.php'; ?>
-        <?php include 'student_json.php'; ?>
+
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper" style="margin-top: 50px;">
             <!-- Content Header (Page header) -->
@@ -17,8 +17,8 @@
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <li>Student</li>
-                    <li class="active">Student List</li>
+
+                    <li class="active">Student</li>
                 </ol>
             </section>
 
@@ -26,144 +26,118 @@
                 <div class="content-panel" style="padding-top: 10px;">
                     <div class="card">
                         <div class="card-header">
-                            <button type="button" id="btnAdd" class="btn btn-primary" data-toggle="modal"
-                                data-target="#myModal"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add
+                            <button type="button" id="add_button" data-toggle="modal" data-target="#userModal"
+                                class="btn btn-success"><i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                Add
                                 New</button>
-                                <button type="button" data-toggle="modal" data-target="#myImport" id="btnAdd"
-                                    class="btn btn-success">
-                                    <i class="fa fa-download" aria-hidden="true"></i> Import
-                                </button>
-                                <a href="exportData.php" id="btnAdd" class="btn btn-primary"> <i class="fa fa-file-excel-o" aria-hidden="true"></i> Export</a>
-
-                                
                         </div>
-                        <div class="card-body">
-                            <table data-ordering="false" id="table_id" class="table table-hover d-flex justify-content-between">
-                                
-                                <div class="modal fade" id="myModal">
+                        <div id="image_data">
+                            <div class="card-body">
+                                <table id="user_data" class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>STUDENT ID</th>
+                                            <th>STUDENT NAME</th>
+                                            <th>PASSWORD</th>
+                                            <th>IMAGE</th>
+                                            <th>CLASS</th>
+                                            <th>PHONE</th>
+                                            <th>EMAIL</th>
+                                            <th>CREATE DATE</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                                <div id="userModal" class="modal fade">
                                     <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Student Info</h4>
-                                                <button type="button" class="close" data-dismiss="modal"><i
-                                                        class="fas fa-closes"></i></button>
-                                            </div>
-
-                                            <div class="modal-body">
-                                                <form method="post" id="form" enctype="multipart/form-data">
-
+                                        <form method="post" id="book_form" enctype="multipart/form-data">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Add Student</h4>
+                                                    <!-- <button type="button" class="btn-close" data-dismiss="modal"
+                                                        aria-label="Close"></button> -->
+                                                </div>
+                                                <div class="modal-body">
                                                     <div class="form-group">
-                                                        <label for="studentid" class="form-label">Student ID</label>
-                                                        <input type="text" name="txtStudentId" id="txtStudentId"
-                                                            class="form-control" required>
+                                                        <label for="name">Student ID</label>
+                                                        <input type="text" name="studentId" id="studentId"
+                                                            class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="name">Student Name</label>
+                                                        <input type="text" name="studentName" id="studentName"
+                                                            class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="name">Password</label>
+                                                        <input type="password" name="password" id="password"
+                                                            class="form-control">
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="fullname" class="form-label">Student Name</label>
-                                                        <input type="text" name="txtStudentName" id="txtStudentName"
-                                                            class="form-control" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="form-label" for="chooseFile">Image</label>
-                                                        <input type="file" name="fileUpload" class="form-control" id="chooseFile">
-                                                        
-
-                                                        <div class="user-image mb-3 text-center">
-                                                            <div style="width: 100%; height: 200px; overflow: hidden; background: #cccccc;">
-                                                                <img src="..." class="figure-img img-fluid rounded" id="imgPlaceholder" alt="">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="book" class="form-label">Class</label>
-                                                        <select class="form-control" name="ddlClass" id="ddlClass" required>
-                                                            <option>--Choose---</option>
+                                                        <label for="category">Class</label>
+                                                        <select class="form-control" id="classId" name="classId">
+                                                            <option>--Choose--</option>
+                                                            <?php
+                                                            require("./config/db.php");
+                                                            $sql=" SELECT * FROM Class";
+                                                            $result =$conn->prepare($sql);
+                                                            $result  ->execute();
+                                                            while($row=$result->fetch(PDO::FETCH_NUM)){
+                                                                echo("<option value=" .$row[0].">" .$row[1]."</option>");
+                                                            }
+                                                            ?>
                                                         </select>
                                                     </div>
+                                                    <div class="form-group">
+                                                        <label class="form-label">Phone</label>
+                                                        <input type="text" name="phone" id="phone"
+                                                            class="form-control" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="form-label">Email</label>
+                                                        <input type="text" name="email" id="email"
+                                                            class="form-control" />
+                                                    </div>
 
                                                     <div class="form-group">
-                                                        <label for="phone" class="form-label">Phone</label>
-                                                        <input type="text" name="txtPhone" id="txtPhone"
+                                                        <label class="form-label">Image</label>
+                                                        <input type="file" name="user_image" id="user_image"
                                                             class="form-control">
+                                                        <span id="user_uploaded_image"></span>
                                                     </div>
-
-                                                    <div class="form-group">
-                                                        <label for="email" class="form-label">Email</label>
-                                                        <input type="email" name="txtEmail" id="txtEmail"
-                                                            class="form-control">
-                                                    </div>
-
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-success"
-                                                            id="btnSave">Save</button>
-                                                        <button type="button" class="btn btn-danger"
-                                                            data-dismiss="modal">Close</button>
-                                                    </div>
-                                                </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <input type="hidden" name="user_id" id="user_id" />
+                                                    <input type="hidden" name="operation" id="operation" />
+                                                    <input type="submit" name="action" id="action"
+                                                        class="btn btn-success" value="Add" />
+                                                    <button type="button" class="btn btn-default"
+                                                        data-dismiss="modal">Close</button>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
 
-                                <div class="modal" id="myImport">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Import</h4>
-                                                <button type="button" class="close" data-dismiss="modal"><i
-                                                        class="fas fa-closes"></i></button>
-                                            </div>
-
-                                            <div class="modal-body">
-
-                                                <form method="POST" action="importBook.php"
-                                                    enctype="multipart/form-data" id="upload_csv_form">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Choose file</label>
-                                                        <input type="file" name="file" class="form-control">
-                                                    </div>
-
-                                                    <div class="modal-footer">
-                                                        <button type="submit" name="submit"
-                                                            class="btn btn-success">Upload</button>
-                                                        <button type="button" class="btn btn-danger"
-                                                            data-dismiss="modal">Close</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </table>
+                            </div>
 
                         </div>
-
                     </div>
-                </div>
 
+                </div>
             </div>
+
         </div>
 
-        <?php include 'includes/footer.php'; ?>
-        <?php include 'includes/scripts.php'; ?>
-        
-        <script type="text/javascript" src="js\jquery.dataTables.min.js"></script>
-        <script type="text/javascript" src="js\dataTables.bootstrap4.min.js"></script>
-        <script type="text/javascript" src="js\student.js"></script>
-        <script>
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $('#imgPlaceholder').attr('src', e.target.result);
-                    }
-                    reader.readAsDataURL(input.files[0]); // convert to base64 string
-                }
-            }
-            $("#chooseFile").change(function () {
-                readURL(this);
-            });
-        </script>
+
+    </div>
 </body>
+<?php include 'includes/scripts.php'; ?>
+
+
+<script type="text/javascript" src="js\jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="js\dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript" src="js\student1.js"></script>

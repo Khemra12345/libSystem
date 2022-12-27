@@ -2,12 +2,12 @@
 
     require './config/db.php';
     if($_GET["data"] == "get_class"){
-        $sql = "select * from tbl_class";
+        $sql = "select * from Class";
         $result = $conn->prepare($sql);
 		$result->execute();
         $class = [];
         while($row = $result->fetch(PDO::FETCH_ASSOC)){
-            $class[] = array($row["id"], $row["class_name"],$row["create_date"]);
+            $class[] = array($row["id"], $row["className"],$row["create_date"]);
         }
         echo json_encode($class);
     }
@@ -16,9 +16,9 @@
     if($_GET["data"] == "add_class"){
             $name = $_POST["txtName"];
 
-            $sql = "Insert into tbl_class (class_name) values (:class_name);";
+            $sql = "Insert into Class (className) values (:className);";
             $insert = $conn->prepare($sql);
-            $insert->bindParam(':class_name', $name);
+            $insert->bindParam(':className', $name);
 
             if($insert->execute()){
                    echo json_encode("Insert Success");}
@@ -27,11 +27,11 @@
 
     //2-get_byID
     if($_GET['data'] == 'get_byid'){
-        $result = $conn->prepare("select * from tbl_class where id=:id");
+        $result = $conn->prepare("select * from Class where id=:id");
         $result->bindParam(':id', $_GET['id']);
         $result->execute();
         if($row = $result->fetch(PDO::FETCH_ASSOC)){
-            $class[] = array($row['id'], $row['class_name'],$row['create_date']);
+            $class[] = array($row['id'], $row['className'],$row['create_date']);
         }
         echo json_encode($class);
     }
@@ -45,10 +45,10 @@
             $id = $_GET['id'];
             $name = $_POST['txtName'];
 
-            $sql = "Update tbl_class set class_name=:class_name where id=:id;";
+            $sql = "Update Class set className=:className where id=:id;";
             $update = $conn->prepare($sql);
 
-            $update->bindParam(':class_name', $name);
+            $update->bindParam(':className', $name);
             $update->bindParam(':id', $id);
             if($update->execute()){
                 echo json_encode("Update Success");
@@ -61,7 +61,7 @@
     //4-delete
     if($_GET['data'] == 'delete_class'){
         $id = $_GET['id'];
-        $delete = $conn->prepare("DELETE FROM tbl_class WHERE id=:id;");
+        $delete = $conn->prepare("DELETE FROM Class WHERE id=:id;");
         $delete->bindParam(':id', $id);
         if($delete->execute()){
             echo json_encode("Delete Success");

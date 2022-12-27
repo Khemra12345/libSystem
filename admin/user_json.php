@@ -4,7 +4,7 @@
  
 	//1get_user 
 	if ($_GET["data"] == "get_user") {
-		$sql = "SELECT * FROM tbl_user";
+		$sql = "SELECT * FROM User";
 		$result = $conn->prepare($sql);
 		$result->execute();
 		$user = [];
@@ -35,7 +35,7 @@
 		$user_type = $_POST['txtutype'];
 		$verify_password = $_POST['txtverify'];
 
-		$sql="insert into tbl_user(username,password,email,user_type,verify_password) values(:username,:password,:email,:user_type,:verify_password);";
+		$sql="insert into User(username,password,email,user_type,verify_password) values(:username,:password,:email,:user_type,:verify_password);";
 		$insert = $conn->prepare($sql);
 		$insert->bindParam(':username',$username);
 		$insert->bindParam(':password',$password);
@@ -53,7 +53,7 @@
 
 		// 4 get_byid
 	if ($_GET["data"]=="get_byid") {
-		$result = $conn->prepare("SELECT * FROM tbl_user WHERE id=:id");
+		$result = $conn->prepare("SELECT * FROM User WHERE id=:id");
 		$result->bindParam(':id',$_GET["id"]);
 		$result->execute();
 		while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
@@ -77,7 +77,7 @@
 		$user_type = $_POST['txtutype'];
 		$verify_password = $_POST['txtverify'];
 
-		$sql="update tbl_user set username=:username, password=:password, email=:email, user_type=:user_type,verify_password=:verify_password where id=:id";
+		$sql="update User set username=:username, password=:password, email=:email, user_type=:user_type,verify_password=:verify_password where id=:id";
 		$update = $conn->prepare($sql);
 		$update->bindParam(':username',$username);
 		$update->bindParam(':password',$password);
@@ -92,7 +92,7 @@
 
 	if ($_GET["data"]=="delete_user") {
 		$id = $_GET["id"];
-		$sql = "DELETE FROM tbl_user WHERE id=:id";
+		$sql = "DELETE FROM User WHERE id=:id";
 		$delete = $conn->prepare($sql);
 		$delete->bindParam(':id',$id);
 		if ($delete->execute()) { echo json_encode("Delete Success");}

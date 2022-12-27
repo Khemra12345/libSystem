@@ -8,7 +8,7 @@ if (isset($_POST["login"])) {
     if (empty($_POST["username"]) || empty($_POST["password"])) {
         $message = '<label>All fields are required</label>';
     } else {
-        $sql = "SELECT * FROM tbl_user WHERE username = :username AND password = :password";
+        $sql = "SELECT * FROM User WHERE username = :username AND password = :password";
         $statement = $conn->prepare($sql);
         $statement->execute(
             array(
